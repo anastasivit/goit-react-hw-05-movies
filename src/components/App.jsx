@@ -10,20 +10,16 @@ const App = () => {
   return (
     <Router>
       <nav>
-        {/* Вкладка Home */}
         <Link to="/">Home</Link>
-        {/* Вкладка Movies */}
         <Link to="/movies">Movies</Link>
       </nav>
       <Routes>
-        {/* Залишаємо додатковий маршрут для головної сторінки */}
         <Route path="/" element={<Home />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/movies/:movieId" element={<MovieDetails />}>
           <Route path="cast" element={<Cast />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
-        {/* Додати маршрут для головної сторінки */}
         <Route path="/*" element={<Home />} />
       </Routes>
     </Router>
