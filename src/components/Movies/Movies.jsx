@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Movies = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState(null);
-  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = async () => {
     try {
@@ -25,10 +24,6 @@ const Movies = () => {
     }
   };
 
-  const handleMovieClick = movieId => {
-    navigate(`/movies/${movieId}?query=${searchTerm}`);
-  };
-
   return (
     <div>
       <h2>Search Movies</h2>
@@ -39,25 +34,18 @@ const Movies = () => {
       />
       <button onClick={handleSearch}>Search</button>
 
-      {searchResults === null ? (
-        <div>Loading...</div>
-      ) : searchResults.length > 0 ? (
+      {searchResults.length === 0 ? (
+        <div>No results found</div>
+      ) : (
         <ul>
           {searchResults.map(movie => (
             <li key={movie.id}>
-              <Link
-                to={{
-                  pathname: `/movies/${movie.id}`,
-                  search: `?query=${searchTerm}`,
-                }}
-              >
+              <Link to={`/movies/${movie.id}?query=${searchTerm}`}>
                 {movie.title}
               </Link>
             </li>
           ))}
         </ul>
-      ) : (
-        <div>No results found</div>
       )}
     </div>
   );

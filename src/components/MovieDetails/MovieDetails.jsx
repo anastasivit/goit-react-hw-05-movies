@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate, Outlet, Route } from 'react-router-dom';
+import { useParams, Link, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-import Cast from '../Cast/Cast';
-import Reviews from '../Reviews/Reviews';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -64,10 +61,7 @@ const MovieDetails = () => {
         <h3>
           <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
         </h3>
-        <Outlet>
-          <Route path="cast" element={<Cast />} />
-          <Route path="reviews" element={<Reviews />} />
-        </Outlet>
+        <Outlet />
       </div>
     </div>
   );
