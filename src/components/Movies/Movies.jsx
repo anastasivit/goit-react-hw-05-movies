@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Movies = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -39,7 +39,9 @@ const Movies = () => {
       />
       <button onClick={handleSearch}>Search</button>
 
-      {searchResults.length > 0 && (
+      {searchResults === null ? (
+        <div>Loading...</div>
+      ) : searchResults.length > 0 ? (
         <ul>
           {searchResults.map(movie => (
             <li key={movie.id}>
@@ -54,6 +56,8 @@ const Movies = () => {
             </li>
           ))}
         </ul>
+      ) : (
+        <div>No results found</div>
       )}
     </div>
   );
