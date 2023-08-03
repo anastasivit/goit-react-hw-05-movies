@@ -7,6 +7,7 @@ const Cast = () => {
   const { movieId } = useParams();
 
   const [cast, setCast] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCast = async () => {
@@ -20,13 +21,23 @@ const Cast = () => {
           }
         );
         setCast(response.data.cast);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching cast:', error);
+        setIsLoading(false);
       }
     };
 
     fetchCast();
   }, [movieId]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (cast.length === 0) {
+    return <div>We don't have any cast for this movie.</div>;
+  }
 
   return (
     <div className={styles.castContainer}>
