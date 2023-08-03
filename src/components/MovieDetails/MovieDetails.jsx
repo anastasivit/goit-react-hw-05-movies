@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate, Outlet } from 'react-router-dom';
+import {
+  useParams,
+  Link,
+  useNavigate,
+  Outlet,
+  useLocation,
+} from 'react-router-dom';
 import axios from 'axios';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
   const [movieDetails, setMovieDetails] = useState(null);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get('query');
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -24,7 +33,15 @@ const MovieDetails = () => {
   }, [movieId]);
 
   const handleGoBack = () => {
-    navigate(-1);
+    if (query) {
+      navigate(`/movies?query=${query}`);
+    } else {
+      if (location.state && location.state.from) {
+        navigate(location.state.from);
+      } else {
+        navigate(-1);
+      }
+    }
   };
 
   if (!movieDetails) {
@@ -63,6 +80,7 @@ const MovieDetails = () => {
         </h3>
         <Outlet />
       </div>
+      {query && <p>Search Query: {query}</p>} {}
     </div>
   );
 };
