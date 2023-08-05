@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from './Cast.module.css';
 
-const Cast = () => {
+const Cast = ({ movies }) => {
   const { movieId } = useParams();
 
   const [cast, setCast] = useState([]);
@@ -12,16 +12,21 @@ const Cast = () => {
   useEffect(() => {
     const fetchCast = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/credits`,
-          {
-            params: {
-              api_key: 'a671f7524d97836b3853115348c4c13a',
-            },
-          }
-        );
-        setCast(response.data.cast);
-        setIsLoading(false);
+        const movie = movies.find(movie => movie.id.toString() === movieId);
+        if (movie) {
+          const response = await axios.get(
+            `https://api.themoviedb.org/3/movie/${movie.id}/credits`,
+            {
+              params: {
+                api_key: 'a671f7524d97836b3853115348c4c13a',
+              },
+            }
+          );
+          setCast(response.data.cast);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error('Error fetching cast:', error);
         setIsLoading(false);
@@ -29,7 +34,7 @@ const Cast = () => {
     };
 
     fetchCast();
-  }, [movieId]);
+  }, [movieId, movies]);
 
   if (isLoading) {
     return <div>Loading...</div>;

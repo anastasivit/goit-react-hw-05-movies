@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 
 const Movies = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     try {
@@ -19,6 +20,16 @@ const Movies = () => {
         }
       );
       setSearchResults(response.data.results);
+
+      if (searchTerm) {
+        setSearchTerm('');
+        navigate(`/movies/search?query=${searchTerm}`, {
+          state: {
+            from: location.pathname,
+            movies: searchResults,
+          },
+        });
+      }
     } catch (error) {
       console.error('Error searching movies:', error);
       setSearchResults([]);
@@ -41,10 +52,8 @@ const Movies = () => {
           {searchResults.map(movie => (
             <li key={movie.id}>
               <Link
-                to={{
-                  pathname: `/movies/${movie.id}`,
-                  state: { from: location, query: searchTerm },
-                }}
+                to={`/movies/${movie.id}`}
+                state={{ from: location.pathname, movies: searchResults }}
               >
                 {movie.title}
               </Link>
@@ -52,6 +61,7 @@ const Movies = () => {
           ))}
         </ul>
       )}
+      <Outlet />
     </div>
   );
 };

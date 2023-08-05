@@ -2,19 +2,21 @@ import React, { useEffect, useState } from 'react';
 import {
   useParams,
   Link,
+  useLocation,
   useNavigate,
   Outlet,
-  useLocation,
 } from 'react-router-dom';
 import axios from 'axios';
+import Cast from '../Cast/Cast';
+import Reviews from '../Reviews/Reviews';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
   const [movieDetails, setMovieDetails] = useState(null);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get('query');
+
+  const movies = location.state?.movies || [];
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -33,15 +35,7 @@ const MovieDetails = () => {
   }, [movieId]);
 
   const handleGoBack = () => {
-    if (query) {
-      navigate(`/movies?query=${query}`);
-    } else {
-      if (location.state && location.state.from) {
-        navigate(location.state.from);
-      } else {
-        navigate(-1);
-      }
-    }
+    navigate(location.state?.from || '/movies');
   };
 
   if (!movieDetails) {
@@ -78,9 +72,8 @@ const MovieDetails = () => {
         <h3>
           <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
         </h3>
-        <Outlet />
       </div>
-      {query && <p>Search Query: {query}</p>} {}
+      <Outlet />
     </div>
   );
 };

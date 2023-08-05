@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const Reviews = () => {
+const Reviews = ({ movies }) => {
   const { movieId } = useParams();
 
   const [reviews, setReviews] = useState([]);
@@ -11,16 +11,21 @@ const Reviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/reviews`,
-          {
-            params: {
-              api_key: 'a671f7524d97836b3853115348c4c13a',
-            },
-          }
-        );
-        setReviews(response.data.results);
-        setIsLoading(false);
+        const movie = movies.find(movie => movie.id.toString() === movieId);
+        if (movie) {
+          const response = await axios.get(
+            `https://api.themoviedb.org/3/movie/${movie.id}/reviews`,
+            {
+              params: {
+                api_key: 'a671f7524d97836b3853115348c4c13a',
+              },
+            }
+          );
+          setReviews(response.data.results);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error('Error fetching reviews:', error);
         setIsLoading(false);
@@ -28,7 +33,7 @@ const Reviews = () => {
     };
 
     fetchReviews();
-  }, [movieId]);
+  }, [movieId, movies]);
 
   if (isLoading) {
     return <div>Loading...</div>;
