@@ -5,10 +5,12 @@ import axios from 'axios';
 const Movies = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleSearch = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://api.themoviedb.org/3/search/movie`,
@@ -20,19 +22,11 @@ const Movies = () => {
         }
       );
       setSearchResults(response.data.results);
-
-      if (searchTerm) {
-        setSearchTerm('');
-        navigate(`/movies/search?query=${searchTerm}`, {
-          state: {
-            from: location.pathname,
-            movies: searchResults,
-          },
-        });
-      }
     } catch (error) {
       console.error('Error searching movies:', error);
       setSearchResults([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,7 +39,9 @@ const Movies = () => {
         onChange={e => setSearchTerm(e.target.value)}
       />
       <button onClick={handleSearch}>Search</button>
-      {searchResults.length === 0 ? (
+      {loading ? (
+        <div>Loading...</div>
+      ) : searchResults.length === 0 ? (
         <div>No results found</div>
       ) : (
         <ul>

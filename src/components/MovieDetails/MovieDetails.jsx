@@ -1,22 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  useParams,
-  Link,
-  useLocation,
-  useNavigate,
-  Outlet,
-} from 'react-router-dom';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Cast from '../Cast/Cast';
-import Reviews from '../Reviews/Reviews';
 
-const MovieDetails = () => {
+const MovieDetails = props => {
   const { movieId } = useParams();
   const navigate = useNavigate();
   const [movieDetails, setMovieDetails] = useState(null);
   const location = useLocation();
-
-  const movies = location.state?.movies || [];
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -73,7 +63,6 @@ const MovieDetails = () => {
           <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
         </h3>
       </div>
-      <Outlet />
     </div>
   );
 };
