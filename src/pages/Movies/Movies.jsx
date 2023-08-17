@@ -7,17 +7,23 @@ const Movies = () => {
   const [query, setQuery] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const searchQuery = searchParams.get('query');
     if (!searchQuery) {
       return;
     }
-    console.log(searchQuery);
+
+    setIsLoading(true);
+
     getMoviesByQuery(searchQuery)
       .then(setMovies)
-      .finally(() => setSearchParams({ query: searchQuery }));
-  }, [searchParams]);
+      .finally(() => {
+        setIsLoading(false);
+        setSearchParams({ query: searchQuery });
+      });
+  }, [searchParams, setSearchParams]); // Вказано searchParams і setSearchParams як залежності
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -38,7 +44,14 @@ const Movies = () => {
         <input type="text" name="query" value={query} onChange={handleChange} />
         <button type="submit">Search</button>
       </form>
-      <MoviesList movies={movies}></MoviesList>
+
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : movies.length === 0 ? (
+        <p>No movies found.</p>
+      ) : (
+        <MoviesList movies={movies}></MoviesList>
+      )}
     </div>
   );
 };
