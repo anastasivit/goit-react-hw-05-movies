@@ -19,7 +19,7 @@ import {
 const MovieDetails = () => {
   const [details, setDetails] = useState(null);
   const [credits, setCredits] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const [setReviews] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +28,7 @@ const MovieDetails = () => {
     getMoviesDetails(id).then(setDetails);
     getMoviesCast(id).then(setCredits);
     getMoviesReviews(id).then(setReviews);
-  }, [id]);
+  }, [id, setReviews]);
 
   if (!details) {
     return <h1>Error</h1>;
