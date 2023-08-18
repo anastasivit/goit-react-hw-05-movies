@@ -19,7 +19,8 @@ import {
 const MovieDetails = () => {
   const [details, setDetails] = useState(null);
   const [credits, setCredits] = useState([]);
-  const [setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [message, setMessage] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +29,7 @@ const MovieDetails = () => {
     getMoviesDetails(id).then(setDetails);
     getMoviesCast(id).then(setCredits);
     getMoviesReviews(id).then(setReviews);
-  }, [id, setReviews]);
+  }, [id]);
 
   if (!details) {
     return <h1>Error</h1>;
@@ -36,6 +37,14 @@ const MovieDetails = () => {
 
   const handleGoBack = () => {
     navigate(location.state.from);
+  };
+
+  const handleShowMessage = messageType => {
+    if (messageType === 'cast' && credits.length === 0) {
+      setMessage("We don't have cast for this movie.");
+    } else if (messageType === 'reviews' && reviews.length === 0) {
+      setMessage("We don't have any reviews for this movie.");
+    }
   };
 
   return (
@@ -55,16 +64,24 @@ const MovieDetails = () => {
         </Details>
       </InfoContainer>
 
-      {credits.length > 0 && (
-        <CastReviewsContainer>
-          <Link to="cast" state={{ from: location.state.from }}>
-            Cast
-          </Link>
-          <Link to="reviews" state={{ from: location.state.from }}>
-            Reviews
-          </Link>
-        </CastReviewsContainer>
-      )}
+      <CastReviewsContainer>
+        <Link
+          to="cast"
+          state={{ from: location.state.from }}
+          onClick={() => handleShowMessage('cast')}
+        >
+          Cast
+        </Link>
+        <Link
+          to="reviews"
+          state={{ from: location.state.from }}
+          onClick={() => handleShowMessage('reviews')}
+        >
+          Reviews
+        </Link>
+      </CastReviewsContainer>
+
+      {message && <p>{message}</p>}
 
       <Outlet />
     </Container>
