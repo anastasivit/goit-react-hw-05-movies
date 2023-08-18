@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/goit-react-hw-05-movies/static/css/main.b5320759.css",
-    "main.js": "/goit-react-hw-05-movies/static/js/main.7badaf76.js",
+    "main.js": "/goit-react-hw-05-movies/static/js/main.1a2213ef.js",
     "static/js/247.15523bdf.chunk.js": "/goit-react-hw-05-movies/static/js/247.15523bdf.chunk.js",
     "static/js/186.c771f760.chunk.js": "/goit-react-hw-05-movies/static/js/186.c771f760.chunk.js",
-    "static/js/104.9fa2ca93.chunk.js": "/goit-react-hw-05-movies/static/js/104.9fa2ca93.chunk.js",
+    "static/js/104.e31fea67.chunk.js": "/goit-react-hw-05-movies/static/js/104.e31fea67.chunk.js",
     "static/js/278.af7a1006.chunk.js": "/goit-react-hw-05-movies/static/js/278.af7a1006.chunk.js",
     "static/js/544.dcc29f88.chunk.js": "/goit-react-hw-05-movies/static/js/544.dcc29f88.chunk.js",
     "static/js/384.28e49f24.chunk.js": "/goit-react-hw-05-movies/static/js/384.28e49f24.chunk.js",
     "index.html": "/goit-react-hw-05-movies/index.html",
     "main.b5320759.css.map": "/goit-react-hw-05-movies/static/css/main.b5320759.css.map",
-    "main.7badaf76.js.map": "/goit-react-hw-05-movies/static/js/main.7badaf76.js.map",
+    "main.1a2213ef.js.map": "/goit-react-hw-05-movies/static/js/main.1a2213ef.js.map",
     "247.15523bdf.chunk.js.map": "/goit-react-hw-05-movies/static/js/247.15523bdf.chunk.js.map",
     "186.c771f760.chunk.js.map": "/goit-react-hw-05-movies/static/js/186.c771f760.chunk.js.map",
-    "104.9fa2ca93.chunk.js.map": "/goit-react-hw-05-movies/static/js/104.9fa2ca93.chunk.js.map",
+    "104.e31fea67.chunk.js.map": "/goit-react-hw-05-movies/static/js/104.e31fea67.chunk.js.map",
     "278.af7a1006.chunk.js.map": "/goit-react-hw-05-movies/static/js/278.af7a1006.chunk.js.map",
     "544.dcc29f88.chunk.js.map": "/goit-react-hw-05-movies/static/js/544.dcc29f88.chunk.js.map",
     "384.28e49f24.chunk.js.map": "/goit-react-hw-05-movies/static/js/384.28e49f24.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b5320759.css",
-    "static/js/main.7badaf76.js"
+    "static/js/main.1a2213ef.js"
   ]
 }
