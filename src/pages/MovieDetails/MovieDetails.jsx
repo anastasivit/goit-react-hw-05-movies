@@ -19,8 +19,7 @@ import {
 const MovieDetails = () => {
   const [details, setDetails] = useState(null);
   const [credits, setCredits] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [message, setMessage] = useState('');
+  const [setReviews] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,21 +28,16 @@ const MovieDetails = () => {
     getMoviesDetails(id).then(setDetails);
     getMoviesCast(id).then(setCredits);
     getMoviesReviews(id).then(setReviews);
-  }, [id]);
+  }, [id, setReviews]);
 
   if (!details) {
     return <h1>Error</h1>;
   }
 
   const handleGoBack = () => {
-    navigate(location.state.from);
-  };
-
-  const handleShowMessage = messageType => {
-    if (messageType === 'cast' && credits.length === 0) {
-      setMessage("We don't have cast for this movie.");
-    } else if (messageType === 'reviews' && reviews.length === 0) {
-      setMessage("We don't have any reviews for this movie.");
+    if (location.state.from) {
+      navigate(location.state.from);
+    } else {
     }
   };
 
@@ -64,24 +58,16 @@ const MovieDetails = () => {
         </Details>
       </InfoContainer>
 
-      <CastReviewsContainer>
-        <Link
-          to="cast"
-          state={{ from: location.state.from }}
-          onClick={() => handleShowMessage('cast')}
-        >
-          Cast
-        </Link>
-        <Link
-          to="reviews"
-          state={{ from: location.state.from }}
-          onClick={() => handleShowMessage('reviews')}
-        >
-          Reviews
-        </Link>
-      </CastReviewsContainer>
-
-      {message && <p>{message}</p>}
+      {credits.length > 0 && (
+        <CastReviewsContainer>
+          <Link to="cast" state={{ from: location.state.from }}>
+            Cast
+          </Link>
+          <Link to="reviews" state={{ from: location.state.from }}>
+            Reviews
+          </Link>
+        </CastReviewsContainer>
+      )}
 
       <Outlet />
     </Container>
