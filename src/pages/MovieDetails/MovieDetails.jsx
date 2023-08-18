@@ -18,27 +18,33 @@ import {
 
 const MovieDetails = () => {
   const [details, setDetails] = useState(null);
-  const [credits, setCredits] = useState([]);
-  const [setReviews] = useState([]);
+  const [cast, setCast] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [linksClicked, setLinksClicked] = useState(false); // Track if any link clicked
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     getMoviesDetails(id).then(setDetails);
-    getMoviesCast(id).then(setCredits);
-    getMoviesReviews(id).then(setReviews);
-  }, [id, setReviews]);
+    getMoviesCast(id)
+      .then(setCast)
+      .catch(() => {
+        setLinksClicked(true); // Show message when clicked
+      });
+    getMoviesReviews(id)
+      .then(setReviews)
+      .catch(() => {
+        setLinksClicked(true); // Show message when clicked
+      });
+  }, [id]);
 
   if (!details) {
-    return <h1>Error</h1>;
+    return <h1>Loading...</h1>;
   }
 
   const handleGoBack = () => {
-    if (location.state.from) {
-      navigate(location.state.from);
-    } else {
-    }
+    navigate(location.state.from);
   };
 
   return (
@@ -58,15 +64,25 @@ const MovieDetails = () => {
         </Details>
       </InfoContainer>
 
-      {credits.length > 0 && (
-        <CastReviewsContainer>
-          <Link to="cast" state={{ from: location.state.from }}>
-            Cast
-          </Link>
-          <Link to="reviews" state={{ from: location.state.from }}>
-            Reviews
-          </Link>
-        </CastReviewsContainer>
+      <CastReviewsContainer>
+        <Link
+          to="cast"
+          state={{ from: location.state ? location.state.from : '/movies' }}
+          onClick={() => setLinksClicked(true)}
+        >
+          Cast
+        </Link>
+        <Link
+          to="reviews"
+          state={{ from: location.state ? location.state.from : '/movies' }}
+          onClick={() => setLinksClicked(true)}
+        >
+          Reviews
+        </Link>
+      </CastReviewsContainer>
+
+      {linksClicked && cast.length === 0 && reviews.length === 0 && (
+        <p>We don't have cast or reviews for this movie.</p>
       )}
 
       <Outlet />
