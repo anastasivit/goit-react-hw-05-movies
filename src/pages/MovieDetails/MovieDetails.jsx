@@ -20,24 +20,30 @@ const MovieDetails = () => {
   const [details, setDetails] = useState(null);
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [castClicked, setCastClicked] = useState(false);
-  const [reviewsClicked, setReviewsClicked] = useState(false);
   const [linksClicked, setLinksClicked] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    getMoviesDetails(id).then(setDetails);
+    getMoviesDetails(id)
+      .then(setDetails)
+      .catch(error => {
+        console.error('Error fetching movie details:', error);
+      });
+
     getMoviesCast(id)
       .then(setCast)
-      .catch(() => {
-        setLinksClicked(true);
+      .catch(error => {
+        console.error('Error fetching cast:', error);
+        setLinksClicked(true); // Show message when clicked
       });
+
     getMoviesReviews(id)
       .then(setReviews)
-      .catch(() => {
-        setLinksClicked(true);
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+        setLinksClicked(true); // Show message when clicked
       });
   }, [id]);
 
@@ -87,13 +93,9 @@ const MovieDetails = () => {
         <p>We don't have cast or reviews for this movie.</p>
       )}
 
-      {castClicked && cast.length > 0 && (
-        <div>{/* Вивід акторського складу */}</div>
-      )}
+      {cast.length > 0 && <div>{/* Render cast information */}</div>}
 
-      {reviewsClicked && reviews.length > 0 && (
-        <div>{/* Вивід відгуків */}</div>
-      )}
+      {reviews.length > 0 && <div>{/* Render reviews */}</div>}
 
       <Outlet />
     </Container>
