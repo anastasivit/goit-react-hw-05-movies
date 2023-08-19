@@ -20,7 +20,9 @@ const MovieDetails = () => {
   const [details, setDetails] = useState(null);
   const [cast, setCast] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [linksClicked, setLinksClicked] = useState(false); // Track if any link clicked
+  const [castClicked, setCastClicked] = useState(false);
+  const [reviewsClicked, setReviewsClicked] = useState(false);
+  const [linksClicked, setLinksClicked] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,12 +32,12 @@ const MovieDetails = () => {
     getMoviesCast(id)
       .then(setCast)
       .catch(() => {
-        setLinksClicked(true); // Show message when clicked
+        setLinksClicked(true);
       });
     getMoviesReviews(id)
       .then(setReviews)
       .catch(() => {
-        setLinksClicked(true); // Show message when clicked
+        setLinksClicked(true);
       });
   }, [id]);
 
@@ -83,6 +85,14 @@ const MovieDetails = () => {
 
       {linksClicked && cast.length === 0 && reviews.length === 0 && (
         <p>We don't have cast or reviews for this movie.</p>
+      )}
+
+      {castClicked && cast.length > 0 && (
+        <div>{/* Вивід акторського складу */}</div>
+      )}
+
+      {reviewsClicked && reviews.length > 0 && (
+        <div>{/* Вивід відгуків */}</div>
       )}
 
       <Outlet />
