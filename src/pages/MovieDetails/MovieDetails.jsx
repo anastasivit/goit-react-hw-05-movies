@@ -36,14 +36,14 @@ const MovieDetails = () => {
       .then(setCast)
       .catch(error => {
         console.error('Error fetching cast:', error);
-        setLinksClicked(true); // Show message when clicked
+        setLinksClicked(true);
       });
 
     getMoviesReviews(id)
       .then(setReviews)
       .catch(error => {
         console.error('Error fetching reviews:', error);
-        setLinksClicked(true); // Show message when clicked
+        setLinksClicked(true);
       });
   }, [id]);
 
@@ -52,7 +52,11 @@ const MovieDetails = () => {
   }
 
   const handleGoBack = () => {
-    navigate(location.state.from);
+    if (location.state && location.state.from) {
+      navigate(location.state.from);
+    } else {
+      navigate('/movies');
+    }
   };
 
   return (
